@@ -25,33 +25,35 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
         println("files found: " + caseResult.fetchSize)
 
-        val idToCountMap = HashMap<String, Int>()
-        while (caseResult.next()){
-            val id = caseResult.getString("AccountId")
-            if (idToCountMap.containsKey(id))
-                idToCountMap.put(id, idToCountMap[id]!!.plus(1))
+        if (caseResult.fetchSize > 0) {
+            val idToCountMap = HashMap<String, Int>()
+            while (caseResult.next()) {
+                val id = caseResult.getString("AccountId")
+                if (idToCountMap.containsKey(id))
+                    idToCountMap.put(id, idToCountMap[id]!!.plus(1))
+                else
+                    idToCountMap.put(id, 1)
+            }
+
+            val usageStatement = conn.prepareStatement("SELECT * FROM salesforce.JBCXM__UsageData__c WHERE sfid IN ${idToCountMap.keys.toTypedArray()}")
+            val usageResult = usageStatement.executeQuery()
+
+            println("usage docs found: " + usageResult.fetchSize)
+
+            var query = "UPDATE salesforce.JBCXM__UsageData__c"
+            while (usageResult.next()) {
+                val accId = usageResult.getString("JBCXM__Account__c")
+                val recordId = usageResult.getString("id")
+                query += " SET Cases_Created__c = ${idToCountMap[accId]} WHERE ID = $recordId"
+            }
+
+            val updateStatement = conn.prepareStatement(query)
+            val result = updateStatement.execute()
+
+            if (result)
+                println("update succeeded")
             else
-                idToCountMap.put(id, 1)
+                println("update failed")
         }
-
-        val usageStatement = conn.prepareStatement("SELECT * FROM salesforce.JBCXM__UsageData__c WHERE sfid IN ${idToCountMap.keys.toTypedArray()}")
-        val usageResult = usageStatement.executeQuery()
-
-        println("usage docs found: " + usageResult.fetchSize)
-
-        var query = "UPDATE salesforce.JBCXM__UsageData__c"
-        while (usageResult.next()){
-            val accId = usageResult.getString("JBCXM__Account__c")
-            val recordId = usageResult.getString("id")
-            query += " SET Cases_Created__c = ${idToCountMap[accId]} WHERE ID = $recordId"
-        }
-
-        val updateStatement = conn.prepareStatement(query)
-        val result = updateStatement.execute()
-
-        if (result)
-            println("update succeeded")
-        else
-            println("update failed")
     }
 }
