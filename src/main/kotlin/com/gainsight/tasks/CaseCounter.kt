@@ -34,10 +34,12 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         while (caseResult.next()) {
             doProcess = true
             val id = caseResult.getString("AccountId")
-            if (id != "" && idToCountMap.containsKey(id))
-                idToCountMap.put(id, idToCountMap[id]!!.plus(1))
-            else
-                idToCountMap.put(id, 1)
+            if (id.length == 18) {
+                if (idToCountMap.containsKey(id))
+                    idToCountMap.put(id, idToCountMap[id]!!.plus(1))
+                else
+                    idToCountMap.put(id, 1)
+            }
         }
 //        val q = "($$0018000000uueCCAAY&&,$$0018000001J3wwjAAB&&,$$0018000000wnrdYAAQ&&,$$0018000001EtUfgAAF&&,$$00180000015z1DjAAI&&,$$00180000011K2RlAAK&&,$$00180000019dgb8AAA&&,$$0018000000xMGxcAAG&&,$$0018000000o3Pc3AAE$$)"
         if (doProcess) {
