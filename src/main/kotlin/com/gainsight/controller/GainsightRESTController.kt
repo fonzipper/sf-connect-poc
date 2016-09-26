@@ -22,6 +22,10 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
         var stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 1")
         val rs = stmt.executeQuery()
 
+        while (rs.next()){
+            println(rs.getString("CreatedDate"))
+        }
+
         return "Hello there"
     }
 }
