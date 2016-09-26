@@ -20,28 +20,31 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
         val conn = dataSource.connection
 //        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
-        val caseQuery = "SELECT *, COUNT(id) FROM salesforce.case LIMIT 10"
+        val caseQuery = "SELECT * FROM salesforce.case LIMIT 10"
         println(caseQuery)
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
 
-        println("cases found: " + caseResult.getString("count"))
+//        println("cases found: " + caseResult.getString("count"))
 
-        if (caseResult.fetchSize > 0) {
-            println(caseResult.getString("CreatedDate"))
-            val idToCountMap = HashMap<String, Int>()
-            while (caseResult.next()) {
-                val id = caseResult.getString("AccountId")
-                if (idToCountMap.containsKey(id))
-                    idToCountMap.put(id, idToCountMap[id]!!.plus(1))
-                else
-                    idToCountMap.put(id, 1)
-            }
+//        if (caseResult.fetchSize > 0) {
+        println(caseResult.getString("CreatedDate"))
+        val idToCountMap = HashMap<String, Int>()
+        var doProcess  = false
+        while (caseResult.next()) {
+            doProcess = true
+            val id = caseResult.getString("AccountId")
+            if (idToCountMap.containsKey(id))
+                idToCountMap.put(id, idToCountMap[id]!!.plus(1))
+            else
+                idToCountMap.put(id, 1)
+        }
 
+        if (doProcess) {
             val usageStatement = conn.prepareStatement("SELECT * FROM salesforce.JBCXM__UsageData__c WHERE sfid IN ${idToCountMap.keys.toTypedArray()}")
             val usageResult = usageStatement.executeQuery()
 
-            println("usage docs found: " + usageResult.fetchSize)
+    //            println("usage docs found: " + usageResult.fetchSize)
 
             var query = "UPDATE salesforce.JBCXM__UsageData__c"
             while (usageResult.next()) {
