@@ -48,7 +48,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
             for (key in idToCountMap.keys){
                 usageQuery += " JBCXM__Account__c = \"$key\" OR "
             }
-            usageQuery.subSequence(0, usageQuery.length-4)
+            usageQuery = usageQuery.substring(0, usageQuery.length-4)
             println(usageQuery)
             val usageStatement = conn.prepareStatement(usageQuery)
             val usageResult = usageStatement.executeQuery()
