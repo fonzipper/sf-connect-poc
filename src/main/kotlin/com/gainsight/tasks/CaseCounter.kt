@@ -46,7 +46,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
             var usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE"
 
             for (key in idToCountMap.keys){
-                usageQuery += " JBCXM__Account__c = \"$key\" OR "
+                usageQuery += " \"JBCXM__Account__c\" = \"$key\" OR "
             }
             usageQuery = usageQuery.substring(0, usageQuery.length-4)
             println(usageQuery)
