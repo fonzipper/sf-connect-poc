@@ -16,14 +16,14 @@ import javax.sql.CommonDataSource
 @CrossOrigin(origins = arrayOf("*"))
 @RestController
 open class GainsightRESTController @Autowired constructor(val dataSource: BasicDataSource) {
-    @RequestMapping(value = "/**", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
     fun getMainPage(): String{
         val conn = dataSource.connection
-        var stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 5")
+        val stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 5")
         val rs = stmt.executeQuery()
 
         while (rs.next()){
-            println(rs.getString("Id"))
+            println(rs.getString("record_id"))
         }
 
         return "Hello there"
