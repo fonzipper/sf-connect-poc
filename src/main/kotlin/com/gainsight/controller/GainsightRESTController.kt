@@ -19,7 +19,7 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
     @RequestMapping(value = "/**", method = arrayOf(RequestMethod.GET))
     fun getMainPage(): String{
         val conn = dataSource.connection
-        var stmt = conn.prepareStatement("SELECT * FROM salesforce.case MAX 1")
+        var stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 1")
         val rs = stmt.executeQuery()
 
         return "Hello there"
