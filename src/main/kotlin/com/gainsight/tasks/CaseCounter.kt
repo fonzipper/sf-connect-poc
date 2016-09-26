@@ -31,12 +31,10 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 //        println(caseResult.getString("CreatedDate"))
         val idToCountMap = HashMap<String, Int>()
         var doProcess  = false
-        var i = 0
-        while (caseResult.next() && i < 10) {
-            i++
+        while (caseResult.next()) {
             doProcess = true
             val id = caseResult.getString("AccountId")
-            if (idToCountMap.containsKey(id))
+            if (id != "" && idToCountMap.containsKey(id))
                 idToCountMap.put(id, idToCountMap[id]!!.plus(1))
             else
                 idToCountMap.put(id, 1)
