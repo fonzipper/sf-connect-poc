@@ -5,11 +5,10 @@ import org.joda.time.DateTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import java.sql.Date
 import java.util.*
 
 /**
- * Created by capitan on 9/26/16.
+ * Created by capitan on 9/26/16
  */
 
 @Component
@@ -20,10 +19,12 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
     fun updateCaseCounter(){
         val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
         val conn = dataSource.connection
-        val caseStatement = conn.prepareStatement("SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'")
+        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
+        println(caseQuery)
+        val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
 
-        println("files found: " + caseResult.fetchSize)
+        println("cases found: " + caseResult.fetchSize)
 
         if (caseResult.fetchSize > 0) {
             val idToCountMap = HashMap<String, Int>()
