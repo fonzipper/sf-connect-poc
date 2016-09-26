@@ -17,10 +17,10 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
     @Scheduled(fixedRate = 86400000)
     fun updateCaseCounter(){
-        val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
+        val dt = DateTime.now().minusDays(50).toString("yyyy-MM-dd")
         val conn = dataSource.connection
-//        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
-        val caseQuery = "SELECT * FROM salesforce.case LIMIT 1"
+        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\' LIMIT 20"
+//        val caseQuery = "SELECT * FROM salesforce.case LIMIT 1"
         println(caseQuery)
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
