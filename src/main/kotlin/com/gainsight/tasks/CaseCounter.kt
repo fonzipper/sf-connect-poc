@@ -41,7 +41,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         }
 //        val q = "($$0018000000uueCCAAY&&,$$0018000001J3wwjAAB&&,$$0018000000wnrdYAAQ&&,$$0018000001EtUfgAAF&&,$$00180000015z1DjAAI&&,$$00180000011K2RlAAK&&,$$00180000019dgb8AAA&&,$$0018000000xMGxcAAG&&,$$0018000000o3Pc3AAE$$)"
         if (doProcess) {
-            val ids = idToCountMap.keys.joinToString ("&&, $$", "($$", "$$)", -1, "...")
+            val ids = idToCountMap.keys.joinToString ("&& , $$", "($$", "$$)", -1, "...")
             println("ids: $ids")
             val usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE JBCXM__Account__c IN $ids"
             println(usageQuery)
