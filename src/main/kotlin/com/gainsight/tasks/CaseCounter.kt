@@ -41,7 +41,9 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         }
 
         if (doProcess) {
-            val usageStatement = conn.prepareStatement("SELECT * FROM salesforce.JBCXM__UsageData__c WHERE sfid IN ${idToCountMap.keys.toTypedArray()}")
+            val ids = idToCountMap.keys.joinToString ("', '", "('", "')", -1, "...")
+            println("ids: $ids")
+            val usageStatement = conn.prepareStatement("SELECT * FROM salesforce.JBCXM__UsageData__c WHERE sfid IN $ids")
             val usageResult = usageStatement.executeQuery()
 
     //            println("usage docs found: " + usageResult.fetchSize)
