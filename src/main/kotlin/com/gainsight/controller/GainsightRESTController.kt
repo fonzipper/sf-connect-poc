@@ -18,13 +18,13 @@ import javax.sql.CommonDataSource
 open class GainsightRESTController @Autowired constructor(val dataSource: BasicDataSource) {
     @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
     fun getMainPage(): String{
-        val conn = dataSource.connection
-        val stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 5")
-        val rs = stmt.executeQuery()
-
-        while (rs.next()){
-            println(rs.getString("sfid"))
-        }
+//        val conn = dataSource.connection
+//        val stmt = conn.prepareStatement("SELECT * FROM salesforce.case LIMIT 5")
+//        val rs = stmt.executeQuery()
+//
+//        while (rs.next()){
+//            println(rs.getString("sfid"))
+//        }
 
         return "Hello there"
     }
