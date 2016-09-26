@@ -19,7 +19,8 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
     fun updateCaseCounter(){
         val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
         val conn = dataSource.connection
-        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
+//        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
+        val caseQuery = "SELECT * FROM salesforce.case WHERE LIMIT 10"
         println(caseQuery)
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
@@ -27,6 +28,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         println("cases found: " + caseResult.fetchSize)
 
         if (caseResult.fetchSize > 0) {
+            println(caseResult.getString("CreatedDate"))
             val idToCountMap = HashMap<String, Int>()
             while (caseResult.next()) {
                 val id = caseResult.getString("AccountId")
