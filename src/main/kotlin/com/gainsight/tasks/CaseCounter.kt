@@ -32,37 +32,37 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         val idToCountMap = HashMap<String, Int>()
         var doProcess  = false
         while (caseResult.next()) {
-            doProcess = true
             val id = caseResult.getString("AccountId")
             if (id?.length == 18) {
+                doProcess = true
                 if (idToCountMap.containsKey(id))
                     idToCountMap.put(id, idToCountMap[id]!!.plus(1))
                 else
                     idToCountMap.put(id, 1)
             }
         }
-//        val q = "($$0018000000uueCCAAY&&,$$0018000001J3wwjAAB&&,$$0018000000wnrdYAAQ&&,$$0018000001EtUfgAAF&&,$$00180000015z1DjAAI&&,$$00180000011K2RlAAK&&,$$00180000019dgb8AAA&&,$$0018000000xMGxcAAG&&,$$0018000000o3Pc3AAE$$)"
         if (doProcess) {
             val ids = idToCountMap.keys.joinToString ("\' , \'", "(\'", "\')", -1, "...")
             println("ids: $ids")
-            var usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE JBCXM__Account__c IN $ids"
+            val usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE JBCXM__Account__c IN $ids"
 
-//            for (key in idToCountMap.keys){
-//                usageQuery += " JBCXM__Account__c = \"$key\" OR "
-//            }
-//            usageQuery = usageQuery.substring(0, usageQuery.length-4)
             println(usageQuery)
             val usageStatement = conn.prepareStatement(usageQuery)
             val usageResult = usageStatement.executeQuery()
 
-    //            println("usage docs found: " + usageResult.fetchSize)
-
-            var query = "UPDATE salesforce.JBCXM__UsageData__c"
+            var valuesMap = ""
             while (usageResult.next()) {
                 val accId = usageResult.getString("JBCXM__Account__c")
                 val recordId = usageResult.getString("id")
-                query += " SET Cases_Created__c = ${idToCountMap[accId]} WHERE ID = $recordId"
+                valuesMap += "($recordId, ${idToCountMap[accId]}),"
             }
+            valuesMap = valuesMap.substring(0, valuesMap.length-1)
+            val query = "UPDATE salesforce.JBCXM__UsageData__c " +
+                    "AS ud SET Cases_Created__c = u.Cases_Created__c " +
+                    "FROM (VALUES $valuesMap) AS u(id, Cases_Created__c) " +
+                    "WHERE u.id = ud.id"
+
+            println(query)
 
             val updateStatement = conn.prepareStatement(query)
             val result = updateStatement.execute()
