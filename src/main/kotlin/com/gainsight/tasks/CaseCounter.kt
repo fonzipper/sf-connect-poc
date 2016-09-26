@@ -20,7 +20,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
         val conn = dataSource.connection
 //        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
-        val caseQuery = "SELECT * FROM salesforce.case WHERE LIMIT 10"
+        val caseQuery = "SELECT * FROM salesforce.case LIMIT 10"
         println(caseQuery)
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
