@@ -20,7 +20,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
         val dt = DateTime.now().minusDays(100).toString("yyyy-MM-dd")
         val conn = dataSource.connection
 //        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
-        val caseQuery = "SELECT * FROM salesforce.case LIMIT 10"
+        val caseQuery = "SELECT * FROM salesforce.case LIMIT 1"
         println(caseQuery)
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
@@ -46,7 +46,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
             var usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE"
 
             for (key in idToCountMap.keys){
-                usageQuery += " \"JBCXM__Account__c\" = \"$key\" OR "
+                usageQuery += " JBCXM__Account__c = $$$key$$ OR "
             }
             usageQuery = usageQuery.substring(0, usageQuery.length-4)
             println(usageQuery)
