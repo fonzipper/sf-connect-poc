@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 
 fun getDataSource() : BasicDataSource {
     //postgres://azellloqqlrnpv:13vu13-kVHG6cLw8Qwaj-_pFat@ec2-54-243-231-255.compute-1.amazonaws.com:5432/d5cjbi2fceh6tl
-    val uri = URI("postgres://azellloqqlrnpv:13vu13-kVHG6cLw8Qwaj-_pFat@ec2-54-243-231-255.compute-1.amazonaws.com:5432/d5cjbi2fceh6tl")
+    val uri = URI(System.getenv("DATABASE_URL"))
     val username = uri.userInfo.split(":")[0]
     val password = uri.userInfo.split(":")[1]
     val url = "jdbc:postgresql://" + uri.host + uri.port + uri.path
