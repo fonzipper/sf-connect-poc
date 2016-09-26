@@ -1,0 +1,1 @@
+web: ./build/install/Gainsight/bin/Gainsight --server.port=$PORT
