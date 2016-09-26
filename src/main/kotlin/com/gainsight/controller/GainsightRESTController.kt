@@ -23,7 +23,7 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
         val rs = stmt.executeQuery()
 
         while (rs.next()){
-            println(rs.getString("record_id"))
+            println(rs.getString("sfid"))
         }
 
         return "Hello there"
