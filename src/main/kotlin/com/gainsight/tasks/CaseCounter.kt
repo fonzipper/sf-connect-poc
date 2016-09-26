@@ -28,7 +28,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 //        println("cases found: " + caseResult.getString("count"))
 
 //        if (caseResult.fetchSize > 0) {
-        println(caseResult.getString("CreatedDate"))
+//        println(caseResult.getString("CreatedDate"))
         val idToCountMap = HashMap<String, Int>()
         var doProcess  = false
         while (caseResult.next()) {
