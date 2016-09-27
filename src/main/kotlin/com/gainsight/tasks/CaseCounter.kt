@@ -15,20 +15,17 @@ import java.util.*
 open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
 
-    @Scheduled(fixedRate = 86400000)
+    @Scheduled(fixedRate = 8640000)
     fun updateCaseCounter(){
-        val dt = DateTime.now().minusDays(30).toString("yyyy-MM-dd")
+        val dt = DateTime.now().minusDays(31).toString("yyyy-MM-dd")
         val conn = dataSource.connection
         val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
-//        val caseQuery = "SELECT * FROM salesforce.case LIMIT 1"
+
         println(caseQuery)
+
         val caseStatement = conn.prepareStatement(caseQuery)
         val caseResult = caseStatement.executeQuery()
 
-//        println("cases found: " + caseResult.getString("count"))
-
-//        if (caseResult.fetchSize > 0) {
-//        println(caseResult.getString("CreatedDate"))
         val idToCountMap = HashMap<String, Int>()
         var doProcess  = false
         while (caseResult.next()) {
@@ -41,6 +38,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
                     idToCountMap.put(id, 1)
             }
         }
+
         if (doProcess) {
             val ids = idToCountMap.keys.joinToString ("\' , \'", "(\'", "\')", -1, "...")
             println("ids: $ids")
@@ -67,7 +65,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
             val updateStatement = conn.prepareStatement(query)
             val result = updateStatement.execute()
 
-            if (result)
+            if (!result)
                 println("update succeeded")
             else
                 println("update failed")
