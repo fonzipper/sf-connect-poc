@@ -17,7 +17,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
     @Scheduled(fixedRate = 8640000)
     fun updateCaseCounter(){
-        val dt = DateTime.now().minusDays(50).toString("yyyy-MM-dd")
+        val dt = DateTime.now().minusDays(58).toString("yyyy-MM-dd")
         val conn = dataSource.connection
         val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
 
