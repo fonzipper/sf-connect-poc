@@ -17,7 +17,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
     @Scheduled(cron = "0 0 2 * * *", zone = "PST8PDT")
     fun updateCaseCounter(){
-        val dt = DateTime.now().minusDays(7).toString("yyyy-MM-dd")
+        val dt = DateTime.now().minusDays(8).toString("yyyy-MM-dd")
         val conn = dataSource.connection
         val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
 
@@ -41,7 +41,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
 
         if (doProcess) {
             val ids = idToCountMap.keys.joinToString ("\' , \'", "(\'", "\')", -1, "...")
-            println("ids: $ids")
+//            println("ids: $ids")
             val usageQuery = "SELECT * FROM salesforce.JBCXM__UsageData__c WHERE JBCXM__Account__c IN $ids"
 
             println(usageQuery)
