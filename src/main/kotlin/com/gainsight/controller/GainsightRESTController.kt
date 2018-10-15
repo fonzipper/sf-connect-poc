@@ -2,10 +2,7 @@ package com.gainsight.controller
 
 import org.apache.commons.dbcp.BasicDataSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by capitan on 9/20/16.
@@ -23,6 +20,21 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
         var res = ""
         while (rs.next()){
             res += rs.getString("name") + ','
+            println(rs.getString("sfid"))
+        }
+
+        return "Hello there $res"
+    }
+
+    @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
+    fun getWf(@PathVariable("id") id: String): String{
+        val conn = dataSource.connection
+        val stmt = conn.prepareStatement("SELECT * FROM salesforce.workflow__c WHERE sfid = $id")
+        val rs = stmt.executeQuery()
+
+        var res = ""
+        while (rs.next()){
+            res += rs.getString("name") + ' ' + rs.getString("workflow__c")
             println(rs.getString("sfid"))
         }
 
