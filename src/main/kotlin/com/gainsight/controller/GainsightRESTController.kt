@@ -22,7 +22,7 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
 
         var res = ""
         while (rs.next()){
-            res += rs.getString("name")
+            res += rs.getString("name") + ','
             println(rs.getString("sfid"))
         }
 
