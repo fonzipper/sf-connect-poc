@@ -30,7 +30,7 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
     fun getWf(@PathVariable("id") id: String): String{
         println("this is id: $id")
         val conn = dataSource.connection
-        val stmt = conn.prepareStatement("SELECT * FROM salesforce.Workflow__c WHERE sfid IN (\'$id\')")
+        val stmt = conn.prepareStatement("SELECT * FROM salesforce.Workflow__c WHERE sfid LIKE \'%$id%\'")
         val rs = stmt.executeQuery()
 
         var res = ""
