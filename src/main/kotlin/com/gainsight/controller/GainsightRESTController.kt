@@ -29,7 +29,7 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
     fun getWf(@PathVariable("id") id: String): String{
         val conn = dataSource.connection
-        val stmt = conn.prepareStatement("SELECT * FROM salesforce.workflow__c WHERE sfid = \'$id\'")
+        val stmt = conn.prepareStatement("SELECT * FROM salesforce.Workflow__c WHERE sfid IN (\'$id\')")
         val rs = stmt.executeQuery()
 
         var res = ""
@@ -38,6 +38,6 @@ open class GainsightRESTController @Autowired constructor(val dataSource: BasicD
             println(rs.getString("sfid"))
         }
 
-        return "Hello there $res"
+        return "Selected workflow $res"
     }
 }

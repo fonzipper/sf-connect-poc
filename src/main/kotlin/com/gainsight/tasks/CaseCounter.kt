@@ -33,9 +33,9 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
             if (id?.length == 18) {
                 doProcess = true
                 if (idToCountMap.containsKey(id))
-                    idToCountMap.put(id, idToCountMap[id]!!.plus(1))
+                    idToCountMap[id] = idToCountMap[id]!!.plus(1)
                 else
-                    idToCountMap.put(id, 1)
+                    idToCountMap[id] = 1
             }
         }
 
