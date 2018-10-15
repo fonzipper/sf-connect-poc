@@ -19,7 +19,7 @@ open class CaseCounter @Autowired constructor(val dataSource: BasicDataSource) {
     fun updateCaseCounter(){
         val dt = DateTime.now().minusDays(8).toString("yyyy-MM-dd")
         val conn = dataSource.connection
-        val caseQuery = "SELECT * FROM salesforce.case WHERE CreatedDate > \'$dt\'"
+        val caseQuery = "SELECT * FROM salesforce.workflow__c WHERE CreatedDate > \'$dt\'"
 
         println(caseQuery)
 
