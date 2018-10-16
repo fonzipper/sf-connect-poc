@@ -13,6 +13,7 @@ open class Listener(conn: Connection) : Thread() {
             val rs = stmt.executeQuery("SELECT 1")
             rs.close()
             stmt.close()
+            println("Listener listens")
 
             pgConnection.notifications.forEach { nf ->
                 println("FOUND NOTIFICATION ${nf.name} with param ${nf.parameter}")
