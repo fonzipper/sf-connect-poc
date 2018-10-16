@@ -26,11 +26,12 @@ fun main(args: Array<String>) {
 }
 
 fun getDataSource() : BasicDataSource {
-    val uri = URI("postgres://ouyntwzilhdzwo:5b4520e18320d911f76c352b3db19ef3fe7158b139d36f91a475b12a2c542197@ec2-54-217-236-201.eu-west-1.compute.amazonaws.com:5432/d4k4agmok56f3t")
-//    val uri = URI(System.getenv("DATABASE_URL"))
+//    val uri = URI("postgres://ouyntwzilhdzwo:5b4520e18320d911f76c352b3db19ef3fe7158b139d36f91a475b12a2c542197@ec2-54-217-236-201.eu-west-1.compute.amazonaws.com:5432/d4k4agmok56f3t")
+    val uri = URI(System.getenv("DATABASE_URL"))
+
     val username = uri.userInfo.split(":")[0]
     val password = uri.userInfo.split(":")[1]
-    val url = "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path
+    val url = "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require"
 
     val db = BasicDataSource()
     db.url = url
