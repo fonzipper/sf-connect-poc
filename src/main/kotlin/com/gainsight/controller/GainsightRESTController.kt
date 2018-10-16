@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @CrossOrigin(origins = arrayOf("*"))
 @RestController
-open class GainsightRESTController @Autowired constructor(val dataSource: BasicDataSource) {
+open class GainsightRESTController @Autowired constructor(
+        private val dataSource: BasicDataSource
+) {
     @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
     fun getMainPage(): String{
         val conn = dataSource.connection
