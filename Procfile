@@ -1,1 +1,1 @@
-web: ./build/install/Gainsight/bin/Gainsight --server.port=$PORT
+web: ./build/bootScripts/Gainsight --server.port=$PORT
