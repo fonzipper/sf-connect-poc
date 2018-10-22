@@ -27,8 +27,8 @@ fun main(args: Array<String>) {
 }
 
 fun getDataSource() : BasicDataSource {
-    val uri = URI("postgres://krcumcpuuvobfh:e6165a062fc5141cf2feb7095f1d072e03f271791dd08eb06ae640bb4aed7c17@ec2-54-217-235-166.eu-west-1.compute.amazonaws.com:5432/de9lr0had545p3")
-//    val uri = URI(System.getenv("DATABASE_URL"))
+//    val uri = URI("postgres://krcumcpuuvobfh:e6165a062fc5141cf2feb7095f1d072e03f271791dd08eb06ae640bb4aed7c17@ec2-54-217-235-166.eu-west-1.compute.amazonaws.com:5432/de9lr0had545p3")
+    val uri = URI(System.getenv("DATABASE_URL"))
 
     val username = uri.userInfo.split(":")[0]
     val password = uri.userInfo.split(":")[1]
