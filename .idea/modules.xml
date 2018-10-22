@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync.iml" filepath="$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/salesforce-gainsight-sync.iml" filepath="$PROJECT_DIR$/salesforce-gainsight-sync.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync_main.iml" filepath="$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync_main.iml" group="salesforce-gainsight-sync" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync_test.iml" filepath="$PROJECT_DIR$/.idea/modules/salesforce-gainsight-sync_test.iml" group="salesforce-gainsight-sync" />
     </modules>

@@ -24,6 +24,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: "kotlin-jpa"
+apply plugin: 'application'
 
 mainClassName = "com.gainsight.ApplicationKt"
 applicationName = "Gainsight"

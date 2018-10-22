@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <resourceExtensions />
-    <wildcardResourcePatterns>
-      <entry name="!?*.java" />
-      <entry name="!?*.form" />
-      <entry name="!?*.class" />
-      <entry name="!?*.groovy" />
-      <entry name="!?*.scala" />
-      <entry name="!?*.flex" />
-      <entry name="!?*.kt" />
-      <entry name="!?*.clj" />
-      <entry name="!?*.aj" />
-    </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="deji-gainsight-sandbox_main" target="1.5" />
       <module name="deji-gainsight-sandbox_test" target="1.5" />
-      <module name="salesforce-gainsight-sync_main" target="1.5" />
-      <module name="salesforce-gainsight-sync_test" target="1.5" />
+      <module name="salesforce-gainsight-sync_main" target="1.8" />
+      <module name="salesforce-gainsight-sync_test" target="1.8" />
       <module name="sf-connect-poc_main" target="1.5" />
       <module name="sf-connect-poc_test" target="1.5" />
     </bytecodeTargetLevel>
