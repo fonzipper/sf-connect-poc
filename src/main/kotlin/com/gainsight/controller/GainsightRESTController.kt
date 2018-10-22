@@ -1,6 +1,8 @@
 package com.gainsight.controller
 
-import org.apache.commons.dbcp.BasicDataSource
+import com.gainsight.data.PartnerConfig
+import com.gainsight.intefaces.PartnerConfigRepository
+import org.apache.commons.dbcp2.BasicDataSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -8,12 +10,13 @@ import org.springframework.web.bind.annotation.*
  * Created by capitan on 9/20/16.
  */
 
-@CrossOrigin(origins = arrayOf("*"))
+@CrossOrigin(origins = ["*"])
 @RestController
-open class GainsightRESTController @Autowired constructor(
-        private val dataSource: BasicDataSource
+class GainsightRESTController @Autowired constructor(
+        private val dataSource: BasicDataSource,
+        private val repo: PartnerConfigRepository
 ) {
-    @RequestMapping(value = "/", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/"], method = [RequestMethod.GET])
     fun getMainPage(): String{
         val conn = dataSource.connection
         val stmt = conn.prepareStatement("SELECT * FROM salesforce.workflow__c LIMIT 5")
@@ -28,7 +31,7 @@ open class GainsightRESTController @Autowired constructor(
         return "Hello there $res"
     }
 
-    @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/{id}"], method = [RequestMethod.GET])
     fun getWf(@PathVariable("id") id: String): String{
         println("this is id: $id")
         val conn = dataSource.connection
@@ -42,5 +45,24 @@ open class GainsightRESTController @Autowired constructor(
         }
 
         return "Selected workflow $res"
+    }
+
+    @RequestMapping(value = ["/partner"], method = [RequestMethod.GET])
+    fun createPartner(
+            @RequestParam("name", required = false) name: String?,
+            @RequestParam("url", required = false) url: String?): String {
+        if (name == null) return "Parameters has not been provided"
+        var partner = repo.getByName(name)
+        if (url == null) {
+            return partner.toString() + "<br/>" + partner?.endpoint
+        }
+        if (partner == null) {
+            partner = PartnerConfig(name, url)
+        } else {
+            partner.endpoint = url
+        }
+        repo.save(partner)
+
+        return partner.toString() + "<br/>" + partner.endpoint
     }
 }
