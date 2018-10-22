@@ -74,7 +74,7 @@ dependencies {
 
 }
 
-task stage(dependsOn: ['clean', 'installApp'])
+//task stage(dependsOn: ['clean', 'installApp'])
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
