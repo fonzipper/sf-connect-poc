@@ -1,1 +1,1 @@
-web: ./build/bootScripts/Gainsight --server.port=$PORT
+java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.jar
