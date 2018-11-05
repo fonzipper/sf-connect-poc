@@ -1,8 +1,7 @@
 package com.gainsight.intefaces
 
-import com.gainsight.data.Notification
-import javax.persistence.EntityManager
+import com.gainsight.data.PlatformEvent
 
 interface PartnerNotification {
-    fun doNotification(notification: Notification, entityManager: EntityManager)
+    fun doNotification(event: PlatformEvent) : Boolean
 }

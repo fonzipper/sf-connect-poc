@@ -2,12 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="deji-gainsight-sandbox_main" target="1.5" />
-      <module name="deji-gainsight-sandbox_test" target="1.5" />
       <module name="salesforce-gainsight-sync_main" target="1.8" />
       <module name="salesforce-gainsight-sync_test" target="1.8" />
-      <module name="sf-connect-poc_main" target="1.5" />
-      <module name="sf-connect-poc_test" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

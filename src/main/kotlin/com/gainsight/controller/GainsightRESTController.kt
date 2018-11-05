@@ -64,4 +64,9 @@ class GainsightRESTController @Autowired constructor(
 
         return "Oh, hi"
     }
+
+    @RequestMapping(value = ["/oauth2/callback"], method = [RequestMethod.GET, RequestMethod.POST])
+    fun handleAuth(@RequestBody result: String) {
+        println(result)
+    }
 }

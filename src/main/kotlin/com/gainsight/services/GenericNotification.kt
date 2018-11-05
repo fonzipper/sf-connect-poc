@@ -1,51 +1,40 @@
 package com.gainsight.services
 
-import com.gainsight.data.Account
-import com.gainsight.data.Notification
-import com.gainsight.data.Order
+import com.gainsight.data.PlatformEvent
 import com.gainsight.intefaces.PartnerNotification
 import com.google.gson.Gson
 import org.joda.time.DateTime
-import javax.persistence.EntityManager
 
 class GenericNotification : PartnerNotification {
-    override fun doNotification(notification: Notification, entityManager: EntityManager) {
+    override fun doNotification(event: PlatformEvent) : Boolean {
         println("This is Generic nf")
-        val query = entityManager.createNamedQuery("Account.findBySfid", Account::class.java)
-        query.setParameter("sfid", notification.partnerId)
-        val partner = query.singleResult
-        println(partner)
-        if (partner?.endpoint != null) {
-            val payload = getPayload(notification.id, entityManager)
+        if (event.endpoint.isNotBlank()) {
+            val payload = getPayload(event)
             val pl = Gson().toJson(PayloadWrapper(payload))
             val response = khttp.post(
-                    url = partner.endpoint,
+                    url = event.endpoint,
                     headers = mapOf("Content-type" to "application/json"),
                     data = pl
             )
             println(response.text)
+
+            return response.statusCode in 200..299
         }
+
+        return false
     }
 
-    fun getPayload(orderId: Long, entityManager: EntityManager): String {
-        var result = ""
+    private fun getPayload(event: PlatformEvent): String {
+        val pl = PayLoad()
+        pl.partnerOrderNumber = event.partnerOrderNumber
+        pl.partnerProductNumber = event.partnerProductNumber
+        pl.partnerCustomerNumber = event.partnerCustomerNumber
+        pl.spotzerOrderNumber = event.spotzerOrderNumber
+        pl.status = event.status
+        pl.stage = event.stage
+        pl.eventDate = DateTime.parse(event.createdDate).toString()
 
-        val order = entityManager.find(Order::class.java, orderId)
-        if (order != null) {
-
-            val pl = PayLoad()
-            pl.partnerOrderNumber = order.orderNumber
-            pl.partnerProductNumber = order.productNumber
-            pl.partnerCustomerNumber = order.customerId
-            pl.spotzerOrderNumber = order.spon
-            pl.status = "updated"
-            pl.stage = order.stage
-            pl.eventDate = DateTime.now().toString()
-
-            result = pl.toString()
-        }
-
-        return result
+        return pl.toString()
     }
 
     private data class PayloadWrapper(

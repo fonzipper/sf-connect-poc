@@ -1,5 +1,6 @@
 package com.gainsight
 
+import com.gainsight.data.SalesforceConfig
 import org.apache.commons.dbcp2.BasicDataSource
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -20,6 +21,8 @@ import java.net.URI
 class Application {
     @Bean
     fun dataSource() = getDataSource()
+    @Bean
+    fun salesforceConfig() = getSalesforceConfig()
 }
 
 fun main(args: Array<String>) {
@@ -27,7 +30,6 @@ fun main(args: Array<String>) {
 }
 
 fun getDataSource() : BasicDataSource {
-//    val uri = URI("postgres://krcumcpuuvobfh:e6165a062fc5141cf2feb7095f1d072e03f271791dd08eb06ae640bb4aed7c17@ec2-54-217-235-166.eu-west-1.compute.amazonaws.com:5432/de9lr0had545p3")
     val uri = URI(System.getenv("DATABASE_URL"))
 
     val username = uri.userInfo.split(":")[0]
@@ -40,6 +42,30 @@ fun getDataSource() : BasicDataSource {
     db.password = password
 
     return db
+}
+
+fun getSalesforceConfig() : SalesforceConfig {
+    val clientId = System.getenv("SALESFORCE_CLIENTID")
+    val secret = System.getenv("SALESFORCE_SECRET")
+    val instanceUrl = System.getenv("SALESFORCE_URL")
+
+    val response = khttp.post(
+            url = "$instanceUrl/services/oauth2/token",
+            data = mapOf(
+                    "grant_type" to "password",
+                    "client_id" to clientId,
+                    "client_secret" to secret,
+                    "redirect_uri" to "http://localhost:8080/oauth2/callback",
+                    "username" to "nsergienko@spotzer.com.code",
+                    "password" to "labs1234"
+            )
+    )
+
+    return SalesforceConfig(
+            url = response.jsonObject.get("instance_url").toString(),
+            token = response.jsonObject.get("access_token").toString(),
+            topic = System.getenv("SALESFORCE_TOPIC")
+    )
 }
 
 @Configuration

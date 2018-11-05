@@ -1,9 +1,6 @@
 package com.gainsight.misc
 
-import com.gainsight.data.Notification
 import com.gainsight.tasks.NotificationHandler
-import com.google.gson.Gson
-import org.postgresql.PGConnection
 import java.sql.Connection
 
 open class Listener(conn: Connection, notificationHandler: NotificationHandler) : Thread() {
@@ -15,19 +12,19 @@ open class Listener(conn: Connection, notificationHandler: NotificationHandler) 
         stmt.execute("LISTEN order_update")
         stmt.close()
 
-        while (true) {
-            stmt = connection.createStatement()
-            val rs = stmt.executeQuery("SELECT 1")
-            rs.close()
-            stmt.close()
-
-            val pgConnection = connection.unwrap(PGConnection::class.java)
-            pgConnection.notifications?.forEach { nf ->
-                println("FOUND NOTIFICATION ${nf.name} with param ${nf.parameter}")
-                val notification = Gson().fromJson<Notification>(nf.parameter, Notification::class.java)
-                notifier.notifyPartner(notification)
-            }
-            Thread.sleep(500)
-        }
+//        while (true) {
+//            stmt = connection.createStatement()
+//            val rs = stmt.executeQuery("SELECT 1")
+//            rs.close()
+//            stmt.close()
+//
+//            val pgConnection = connection.unwrap(PGConnection::class.java)
+//            pgConnection.notifications?.forEach { nf ->
+//                println("FOUND NOTIFICATION ${nf.name} with param ${nf.parameter}")
+//                val notification = Gson().fromJson<Notification>(nf.parameter, Notification::class.java)
+//                notifier.notifyPartner(notification)
+//            }
+//            Thread.sleep(500)
+//        }
     }
 }
