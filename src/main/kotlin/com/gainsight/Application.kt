@@ -48,6 +48,16 @@ fun getSalesforceConfig() : SalesforceConfig {
     val clientId = System.getenv("SALESFORCE_CLIENTID")
     val secret = System.getenv("SALESFORCE_SECRET")
     val instanceUrl = System.getenv("SALESFORCE_URL")
+    val login = System.getenv("SALESFORCE_LOGIN")
+    val password = System.getenv("SALESFORCE_PASSWORD")
+
+    println("-------------------------------------------------------------------------------")
+    println(clientId)
+    println(secret)
+    println(instanceUrl)
+    println(login)
+    println(password)
+    println("-------------------------------------------------------------------------------")
 
     val response = khttp.post(
             url = "$instanceUrl/services/oauth2/token",
@@ -56,10 +66,16 @@ fun getSalesforceConfig() : SalesforceConfig {
                     "client_id" to clientId,
                     "client_secret" to secret,
                     "redirect_uri" to "http://localhost:8080/oauth2/callback",
-                    "username" to "nsergienko@spotzer.com.code",
-                    "password" to "labs1234"
+                    "username" to login,
+                    "password" to password
             )
     )
+
+    println("-------------------------------------------------------------------------------")
+    println(response.text)
+    println(response.statusCode)
+    println(response.jsonObject)
+    println("-------------------------------------------------------------------------------")
 
     return SalesforceConfig(
             url = response.jsonObject.get("instance_url").toString(),
